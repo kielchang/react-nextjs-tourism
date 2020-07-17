@@ -2,6 +2,14 @@ import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { doThemeToggleSwitch } from "../redux/actions/themeAction";
 import { getDarkModeEnabled } from "../redux/selectors/themeSelector";
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    color: ${({ darkMode }) => (darkMode ? "#fafafa" : "#1c1c1c")};
+    background:  ${({ darkMode }) => (darkMode ? "#1c1c1c" : "#fafafa")};
+  }
+`;
 
 const DarkModeToggle = () => {
   const darkModeEnabled = useSelector(getDarkModeEnabled);
@@ -10,6 +18,7 @@ const DarkModeToggle = () => {
   const handleClick = () => {
     dispatch(doThemeToggleSwitch());
   };
+
   return (
     <div>
       <p>{`${darkModeEnabled}`}</p>
@@ -19,8 +28,11 @@ const DarkModeToggle = () => {
 };
 
 export default function Home() {
+  const darkModeEnabled = useSelector(getDarkModeEnabled);
+
   return (
     <div className="container">
+      <GlobalStyle darkMode={darkModeEnabled} />
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -32,7 +44,6 @@ export default function Home() {
         </h1>
 
         <DarkModeToggle />
-
       </main>
 
       <footer>
